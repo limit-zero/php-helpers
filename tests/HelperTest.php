@@ -42,6 +42,20 @@ class HelperTest extends TestCase
         }
     }
 
+    public function testIsMongoIdFormat()
+    {
+        $helper = Helper::getInstance();
+        $good   = ['57d964fc35ab46fd3de68544', strtoupper('57b20ffc95b9de6773baebeb')];
+        $bad    = ['', null, 12, '5734af34', '57y964fc35xb46fd3dg68544'];
+
+        foreach ($good as $value) {
+            $this->assertTrue($helper->isMongoIdFormat($value));
+        }
+        foreach ($bad as $value) {
+            $this->assertFalse($helper->isMongoIdFormat($value));
+        }
+    }
+
     public function testPrivateClassMethods()
     {
         $reflection = new \ReflectionClass('\Limit0\Helpers\Helper');

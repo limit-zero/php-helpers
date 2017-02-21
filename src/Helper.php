@@ -57,6 +57,17 @@ final class Helper
     }
 
     /**
+     * Determines if the string value is formatted as a MongoId.
+     *
+     * @param   string  $value
+     * @return  bool
+     */
+    public function isMongoIdFormat($value)
+    {
+        return 1 === preg_match('/^[a-f0-9]{24}$/i', $value);
+    }
+
+    /**
      * Disable cloning.
      */
     private function __clone()
