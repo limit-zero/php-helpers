@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Limit0\Assets\Tests;
+namespace Limit0\Helpers;
 
 use PHPUnit\Framework\TestCase;
 use Limit0\Helpers\Helper;
