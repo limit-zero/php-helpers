@@ -1,0 +1,24 @@
+{
+    "name": "limit0/helpers",
+    "license": "MIT",
+    "type": "library",
+    "description": "Common, reusable PHP helper utilities for strings, equality, formatting, etc.",
+    "authors": [
+        {
+            "name": "Jacob Bare",
+            "email": "jacob@limit0.io"
+        },
+        {
+            "name": "Josh Worden",
+            "email": "josh@limit0.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Limit0\\Helpers\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4"
+    }
+}
