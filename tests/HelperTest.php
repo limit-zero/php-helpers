@@ -28,4 +28,11 @@ class HelperTest extends TestCase
 
         $this->assertSame($helper2, $helper);
     }
+
+    public function testCannotInstantiateExternally()
+    {
+        $reflection = new \ReflectionClass('\Limit0\Helpers\Helper');
+        $constructor = $reflection->getConstructor();
+        $this->assertFalse($constructor->isPublic());
+    }
 }
