@@ -35,6 +35,28 @@ final class Helper
     }
 
     /**
+     * Formats an email address value.
+     *
+     * @param   string  $value
+     * @return  string
+     */
+    public function formatEmailAddress($value)
+    {
+        return strtolower(trim($value));
+    }
+
+    /**
+     * Determines if an email address value is valid.
+     *
+     * @param   string  $value
+     * @return  bool
+     */
+    public function isEmailAddressValid($value)
+    {
+        return false === filter_var($value, FILTER_VALIDATE_EMAIL) ? false : true;
+    }
+
+    /**
      * Disable cloning.
      */
     private function __clone()

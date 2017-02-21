@@ -21,18 +21,41 @@ use Limit0\Helpers\Helper;
  */
 class HelperTest extends TestCase
 {
-    public function testInstance()
+    public function testFormatEmailAddress()
+    {
+        $helper = Helper::getInstance();
+        $email  = $helper->formatEmailAddress('  jAcoB@limiT0.io ');
+        $this->assertEquals('jacob@limit0.io', $email);
+    }
+
+    public function testIsEmailAddressValid()
+    {
+        $helper = Helper::getInstance();
+        $good   = ['jacob@limit0.io', '123@some.com'];
+        $bad    = [null, 'foo', 'foo@', 'foo.com@', 'foo@foo', 'foo@@foo.com', 'foo@bar.co@m', 'foo@ bar.com'];
+
+        foreach ($good as $value) {
+            $this->assertTrue($helper->isEmailAddressValid($value));
+        }
+        foreach ($bad as $value) {
+            $this->assertFalse($helper->isEmailAddressValid($value));
+        }
+    }
+
+    public function testPrivateClassMethods()
+    {
+        $reflection = new \ReflectionClass('\Limit0\Helpers\Helper');
+        foreach (['__construct', '__clone', '__wakeup'] as $name) {
+            $method = $reflection->getMethod($name);
+            $this->assertFalse($method->isPublic());
+        }
+    }
+
+    public function testSingletonInstance()
     {
         $helper  = Helper::getInstance();
         $helper2 = Helper::getInstance();
 
         $this->assertSame($helper2, $helper);
-    }
-
-    public function testCannotInstantiateExternally()
-    {
-        $reflection = new \ReflectionClass('\Limit0\Helpers\Helper');
-        $constructor = $reflection->getConstructor();
-        $this->assertFalse($constructor->isPublic());
     }
 }
