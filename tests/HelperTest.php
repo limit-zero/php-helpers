@@ -42,18 +42,42 @@ class HelperTest extends TestCase
         }
     }
 
-    public function testIsMongoIdFormat()
+    public function testIsHexValue()
     {
         $helper = Helper::getInstance();
-        $good   = ['57d964fc35ab46fd3de68544', strtoupper('57b20ffc95b9de6773baebeb')];
-        $bad    = ['', null, 12, '5734af34', '57y964fc35xb46fd3dg68544'];
-
+        $good = [
+            ['abc34a', null, null],
+            ['abc34a', 0, 0],
+            ['abc34a', -2, -1],
+            ['abc34a', 0, 6],
+            ['a34a', 0, 6],
+            ['abc34a', 6, null],
+            ['abc34ab', 6, 0],
+        ];
         foreach ($good as $value) {
-            $this->assertTrue($helper->isMongoIdFormat($value));
+            list($string, $min, $max) = $value;
+            $this->assertTrue($helper->isHexValue($string, $min, $max));
         }
+
+        $bad = [
+            ['abc34', 6, null],
+            ['abc34', 6, 6],
+            ['abc34ab', 6, 6],
+            ['abc34ab', 0, 6],
+        ];
         foreach ($bad as $value) {
-            $this->assertFalse($helper->isMongoIdFormat($value));
+            list($string, $min, $max) = $value;
+            $this->assertFalse($helper->isHexValue($string, $min, $max));
         }
+    }
+
+    /**
+     * @expectedException OutOfRangeException
+     */
+    public function testIsHexValueException()
+    {
+        $helper     = Helper::getInstance();
+        $helper->isHexValue('abc', 2, 1);
     }
 
     public function testPrivateClassMethods()
