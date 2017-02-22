@@ -53,6 +53,7 @@ class HelperTest extends TestCase
             ['a34a', 0, 6],
             ['abc34a', 6, null],
             ['abc34ab', 6, 0],
+            ['abc34AB', 6, 0],
         ];
         foreach ($good as $value) {
             list($string, $min, $max) = $value;
@@ -64,6 +65,7 @@ class HelperTest extends TestCase
             ['abc34', 6, 6],
             ['abc34ab', 6, 6],
             ['abc34ab', 0, 6],
+            ['abc34z', null, null],
         ];
         foreach ($bad as $value) {
             list($string, $min, $max) = $value;
@@ -95,5 +97,25 @@ class HelperTest extends TestCase
         $helper2 = Helper::getInstance();
 
         $this->assertSame($helper2, $helper);
+    }
+
+    public function testSluggifyValue()
+    {
+        $helper = Helper::getInstance();
+        $cases = [
+            'hello-world'        => 'Hello World',
+            'hello-world'        => '<p>Hello <strong>World</strong></p>',
+            'hello-world'        => '<p>Hello <a href="#">World</a>',
+            'hello-world'        => 'Hello <a href="#">World</a></p>',
+            'hello-world'        => '&#x3C;p&#x3E;Hello &#x3C;a href=&#x22;#&#x22;&#x3E;World&#x3C;/a&#x3E;',
+            'hello-world'        => '&lt;p&gt;Hello &lt;a href=&quot;#&quot;&gt;World&lt;/a&gt;',
+            'hello-world-1'      => '   Hello      world       1   ',
+            'hello-and-at-world' => 'Hello & @ World!',
+            'hello-and-at-world' => 'Hello &amp; @ World! # $ % ^ * ( ) { } [ ] ; : " < > , . / ? | \\ \'',
+        ];
+
+        foreach ($cases as $expected => $value) {
+            $this->assertEquals($expected, $helper->sluggifyValue($value));
+        }
     }
 }
