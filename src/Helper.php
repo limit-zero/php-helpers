@@ -90,7 +90,7 @@ final class Helper
      * @param   string  $value
      * @return  string
      */
-    public static function sluggifyValue($value)
+    public function sluggifyValue($value)
     {
         $value = html_entity_decode($value);
         $value = strip_tags($value);
