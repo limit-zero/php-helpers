@@ -109,6 +109,30 @@ final class Helper
     }
 
     /**
+     * Encodes a string to web-safe Base64.
+     *
+     * @link    http://php.net/manual/en/function.base64-encode.php#103849
+     * @param   string  $data
+     * @return  string
+     */
+    public function webBase64Encode($data)
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    /**
+     * Decodes a string from web-safe Base64.
+     *
+     * @link    http://php.net/manual/en/function.base64-encode.php#103849
+     * @param   string  $data
+     * @return  string
+     */
+    public function webBase64Decode($data)
+    {
+        return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+    }
+
+    /**
      * Disable cloning.
      */
     private function __clone()
